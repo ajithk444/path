@@ -31,15 +31,23 @@ struct ContentView: View {
                         }
                     }.padding()
                 }
-                //Divider()
-                Section(header: Text("Summary")){
-                    VStack(alignment: .leading, spacing: 15){
-                        Text("Tasks Completed this week")
+                Divider()
+                Section(header: Text("Summary").fontWeight(.bold).font(.system(size: 15))){
+                    GeometryReader { geometry in
+                        
+                        HStack(spacing: 15){
+                            SummaryItemView(count: 4, status: "Due Today", indicator: Color.green)
+                                .frame(width: geometry.size.width / 3, height: 50)
+                            
+                            Spacer()
+                            SummaryItemView(count: 32, status: "Completed", indicator: Color.blue)
+                                .frame(width: geometry.size.width / 3, height: 50)
+                            
+                        }.padding()
                     }
                 }
             }
-            .navigationBarTitle("Frestack")
-            .background(Color.pink)//.edgesIgnoringSafeArea(.all)
+            .navigationBarTitle(Text("Frestack"),displayMode: .inline)
             Spacer()
         }
     }
@@ -48,6 +56,15 @@ struct ContentView: View {
 struct CalendarWidget: View{
     var body: some View{
         HStack{
+            
+            VStack{
+                Text("Hello Ajith")
+                    .fontWeight(.semibold)
+                .font(.system(size: 20))
+            }
+            
+            Spacer()
+
             VStack{
                 Text("June").fontWeight(.semibold)
                 Text("26th").fontWeight(.semibold)
@@ -56,17 +73,7 @@ struct CalendarWidget: View{
             .foregroundColor(Color.purple)
             .background(Color.yellow)
             .cornerRadius(15)
-            .padding(.leading,40)
-            
-            Spacer()
-            
-            Image(systemName: "circle.grid.2x2.fill")
-                .foregroundColor(.white)
-                .font(.system(size:22))
-                .frame(width:40,height: 40)
-                .padding(.trailing,40)
-            
-        }
+        }.padding()
     }
 }
 
@@ -77,7 +84,6 @@ struct TaskListView : View{
             HStack{
                 Text(tasklist.name)
                     .fontWeight(.bold).font(.system(size: 15))
-                //                Spacer()
                 Button(action:{
                     
                 }){
@@ -108,6 +114,34 @@ struct TaskItemView : View{
     }
 }
 
+
+struct SummaryItemView : View{
+    var count : Int
+    var status : String
+    var indicator : Color
+    
+    var body: some View{
+        VStack{
+                  Text(status)
+                      .fontWeight(.bold).font(.system(size: 15))
+            Spacer()
+            Text(String(count))
+            .fontWeight(.bold).font(.system(size: 15))
+//                  Button(action:{
+//
+//                  }){
+//                      Text("+").foregroundColor(.white)
+//                  }
+                  
+              }.padding()
+            .background(indicator)
+                  .cornerRadius(15)
+    }
+}
+
+
+
+
 struct Triangle : Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
@@ -115,8 +149,6 @@ struct Triangle : Shape {
         path.addLine(to: CGPoint(x:rect.minX,y:rect.maxY))
         path.addLine(to: CGPoint(x:rect.maxX,y:rect.maxY))
         path.addLine(to: CGPoint(x:rect.midX,y:rect.minY))
-        
-        
         return path
         //
         //         Triangle().fill(Color.red)
